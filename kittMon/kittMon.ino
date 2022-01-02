@@ -1,10 +1,26 @@
-#include "kitt.h"
-//#include "kittID.h"
+//+--------------------------------------------------------------------------
+//
+// 2022 TBoy58.  
+//
+// File:        kittMon               
+//
+// Description: A program for the two monitors in the Fanhome Kitt model
+//              from one display
+//              
+//              
+//
+// History:     2-Jan-2022     TBoy58      Created
+//
+//---------------------------------------------------------------------------
+
+
+#include "kitt.h" // data for rotating kitt display
 
 #include <SPI.h>
 #include <TFT_eSPI.h> // Hardware-specific library
 TFT_eSPI tft = TFT_eSPI();
 
+//String array for typed out Kitt ID display
 String id[51]= {"K","KN","KNI","KNIG","KNIGH","KNIGHT",
                 "I","IN","IND","INDU","INDUS","INDUST","INDUSTR",
                 "INDUSTRI","INDUSTRIE","INDUSTRIES",
@@ -25,6 +41,7 @@ int   j     = 0;
 
 bool isID = false;
 
+//Select lines for Kitt ID 
 void select(int s)
 {
   switch (s)
@@ -78,8 +95,11 @@ void loop() {
   {
     if (hold != 0)
     {
+      //Left monitor rotating Kitt pause before next rotation
       tft.pushImage(15, 30,animation_width  , animation_height, rotate[f]);      
       --hold;  
+
+      //Type out Kitt ID right monitor
       if ((idIndex < 51) && isID)
       {
         tft.drawString(id[idIndex],x,y);
@@ -93,6 +113,8 @@ void loop() {
       for(int i = 0; i < 8; ++i)
       {
         tft.pushImage(15, 30,animation_width  , animation_height, rotate[f]);
+
+        //Type out Kitt ID
         if ((idIndex < 51) && isID)
         {
           tft.drawString(id[idIndex],x,y);
@@ -120,6 +142,7 @@ void loop() {
     tft.pushImage(15, 30,animation_width  , animation_height, rotate[f]);
     if(++j == 3)
     {
+      //Clear right monitor and reset
       tft.fillRect(150,15,90,90,TFT_BLACK);
       j = 0;
       idIndex = 0;
